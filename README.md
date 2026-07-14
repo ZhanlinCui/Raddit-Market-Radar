@@ -1,145 +1,254 @@
-# MeDo Reddit Intelligence Radar
+<div align="center">
 
-> 全球 SMB 需求雷达 + AI Native Developer 社区雷达 + 竞品迁移雷达 + 产品机会洞察平台。
+<h1>📡 Reddit Market Radar</h1>
 
-内部 B2B 情报平台：持续扫描目标 Subreddit / 关键词 / 帖子 / 评论，识别正在寻找网站、
-App、预约系统的 SMB，对现有工具不满的迁移用户，正在做 MVP 的 Founder / 开发者，并把它们
-转成可解释、可行动的 **Qualified Opportunities**。
+<h3>Turn Reddit noise into qualified, actionable sales & product opportunities.</h3>
 
-**北极星指标**：每周被业务团队确认并采取行动的 Qualified Opportunities 数量。
+<p>
+  <img src="https://img.shields.io/badge/status-MVP%20(P0%2BP1)-0d946c?style=flat-square" alt="Status">
+  <img src="https://img.shields.io/badge/backend-FastAPI-009688?style=flat-square" alt="FastAPI">
+  <img src="https://img.shields.io/badge/frontend-Next.js%2014-000000?style=flat-square" alt="Next.js">
+  <img src="https://img.shields.io/badge/tests-12%20passing-0d946c?style=flat-square" alt="Tests">
+  <img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="License">
+  <img src="https://img.shields.io/badge/i18n-中文%20%2F%20EN-5b9dff?style=flat-square" alt="i18n">
+</p>
 
-## 当前实现状态
+<p>
+  <a href="#-quickstart">Quickstart</a> &middot;
+  <a href="#-features">Features</a> &middot;
+  <a href="#-how-it-works">How it works</a> &middot;
+  <a href="#-architecture">Architecture</a> &middot;
+  <a href="docs/API.md">API</a>
+</p>
 
-**P0 + P1 全部落地并端到端验证。** 前后端完整数据链路：
+</div>
 
-```
-创建 Radar Project → 配置 Subreddit + 关键词 → 采集 Reddit Post（Mock/真实）
-→ 去重存储 → LLM 分析（Pydantic 校验）→ 生成 Insight → 计算可解释 Opportunity Score
-→ Opportunity Feed → 人工标记/跟进 → 社区/趋势/竞品/活跃用户分析 → 日报/周报 → CSV 导出
-```
+<!-- Replace with a hosted screenshot once available. Local capture confirmed light+dark, zh+en. -->
+<p align="center">
+  <img src="docs/screenshot-overview.png" alt="Reddit Market Radar — Overview dashboard" width="820">
+  <br><em>Overview dashboard — Hot Leads, competitor signals, and top opportunities at a glance.</em>
+</p>
 
-无需任何真实凭证即可运行（Mock Reddit + Mock LLM + SQLite）。配置凭证后同一接口切换真实模式。
+---
 
-### 功能清单
+## Why Reddit Market Radar?
 
-**后端**
-- SourceAdapter 抽象（Mock + Async PRAW），LLMProvider 抽象（Mock + OpenAI-compatible），Embedding 抽象（Mock）
-- 扫描管道：采集 → 去重（唯一约束 + content_hash）→ 分析 → 评分 → 落库；幂等；单条失败隔离
-- 可配置 Opportunity Score（8 维）+ Channel Score（7 维）+ Active User Score（7 维），全部保存子分数可解释
-- Checkpoint（记录每个社区最新 external_id）+ ScanRun 持久化（task health）
-- 内置 asyncio 定时调度器（env 开关）
-- 日报 + 周报（从结构化 Insight 聚合，不重复喂原文）+ CSV 导出 + Rescore
-- 语义召回、活跃用户识别、社区/竞品/趋势聚合分析
+**Reddit is where SMBs, founders, and developers describe their problems in their own words — but finding those signals by hand doesn't scale.**
 
-**前端（9 个页面）**
-Overview · Opportunity Feed（+详情 Drawer）· Community Explorer · Trend Dashboard ·
-Competitor Radar · Active Users · Radar Setup（+Task Health）· Reports · Settings（可调权重 + Rescore）
+Teams end up manually searching subreddits, skimming threads, and copy-pasting pain points into spreadsheets that go stale in a day. Reddit Market Radar replaces that with a continuous pipeline that **collects, classifies, scores, and explains** every relevant post — then surfaces the handful worth acting on.
 
-**主题与多语言**
-默认浅色（Light）主题，可在顶栏一键切换深色（Dark）；中 / EN 双语一键切换，偏好保存在
-localStorage。也支持 URL 参数 `?lang=en&theme=dark` 生成可分享链接。
+> **For Growth & Sales** — a ranked feed of reachable buyers with suggested outreach angles.
+> **For Product & Solutions** — clustered pain points, competitor switch signals, and ICP evidence.
+> **For DevRel** — active builders, community organizers, and AI-native developers worth engaging.
 
-## 快速开始（无凭证，本地）
+**North-star metric:** *Qualified Opportunities actioned by the team each week* — not scraped volume.
 
-需要两个终端：后端 API 与前端 Dashboard。
+## ✨ Features
+
+<table>
+<tr>
+<td width="33%" valign="top">
+
+### 🎯 Explainable scoring
+Every item gets a 0–100 **Opportunity Score** across 8 weighted dimensions. Weights are configurable and every sub-score is persisted — no black boxes.
+
+</td>
+<td width="33%" valign="top">
+
+### 🔌 Pluggable sources & LLMs
+`SourceAdapter` and `LLMProvider` abstractions isolate Reddit and the model. Runs fully on **mock data with zero credentials**, then swaps to live via env vars.
+
+</td>
+<td width="33%" valign="top">
+
+### 🧭 Analyst-grade dashboards
+Nine dashboards: opportunity feed, community & channel scoring, trends, competitor radar, active users — with an evidence-backed detail drawer.
+
+</td>
+</tr>
+<tr>
+<td width="33%" valign="top">
+
+### ⏱️ Continuous scanning
+Idempotent collect → dedupe → analyze → score pipeline with checkpoints, persisted scan runs, task-health monitoring, and a built-in scheduler.
+
+</td>
+<td width="33%" valign="top">
+
+### 📊 Reports & export
+Daily and weekly reports assembled from structured insights (never re-feeding raw text to the LLM), plus one-click CSV / Markdown export.
+
+</td>
+<td width="33%" valign="top">
+
+### 🌗 Polished UX
+Light theme by default with a dark toggle, and full **中文 / English** switching persisted per user — shareable via `?lang=en&theme=dark`.
+
+</td>
+</tr>
+</table>
+
+## 🚀 Quickstart
+
+No Reddit or LLM credentials required — the system boots in **mock mode** on SQLite.
 
 ```bash
-# 终端 1 — 后端 API (http://localhost:8000)
+# Backend — http://localhost:8000  (Swagger at /docs)
 cd apps/api
-python3.11 -m venv .venv && source .venv/bin/activate   # 需 Python 3.10+
+python3.11 -m venv .venv && source .venv/bin/activate   # Python 3.10+ required
 pip install -r requirements.txt
-uvicorn app.main:app --reload            # /docs 有 Swagger
-
-# 终端 2 — 前端 Dashboard (http://localhost:3000)
-cd apps/web
-npm install
-npm run dev
+uvicorn app.main:app --reload
 ```
-
-打开 http://localhost:3000 → Radar Setup 一键填充社区/关键词 → 运行 Mock 扫描（下方
-Task Health 表显示每次扫描）→ Overview / Opportunity Feed 查看结果 → 点开机会看可解释
-评分与 Evidence → 标记 Relevant / 跟进状态 → Community Explorer / Trend / Competitor /
-Active Users 看聚合洞察 → Settings 调评分权重并一键 Rescore → Reports 生成日报/周报并
-导出 .md / CSV。
-
-### 开启定时扫描
-
-后端启动时设 `SCHEDULER_ENABLED=true`，会对每个 Active 项目按 `SCAN_NEW_INTERVAL_MINUTES`
-自动扫描（trigger=scheduled，出现在 Task Health 表）：
 
 ```bash
-SCHEDULER_ENABLED=true SCAN_NEW_INTERVAL_MINUTES=10 uvicorn app.main:app
+# Frontend — http://localhost:3000
+cd apps/web
+npm install && npm run dev
 ```
 
-### 仅后端验证
+Open **http://localhost:3000** → **Radar Setup** seeds subreddits & keywords in one click → run a mock scan → explore the feed, scoring, and reports.
+
+<details>
+<summary><strong>Backend-only demo & tests (no frontend)</strong></summary>
 
 ```bash
 cd apps/api && source .venv/bin/activate
-python demo_slice.py     # 端到端演示（无需前端）
-python -m pytest -q      # 测试
+python demo_slice.py     # end-to-end pipeline demo
+python -m pytest -q      # 12 tests
 ```
 
-> 注意：本机默认 `python3` 为 3.9，不支持 `X | None` 类型语法。请使用 Python 3.10+
-> （本项目用 3.11 验证通过）。
-
-## 演示输出（真实运行结果）
+Real output from `demo_slice.py`:
 
 ```
 === SCAN RESULT ===
 { "mode": "mock", "collected": 4, "new_contents": 4, "analyzed": 4, "hot_leads": 1 }
 
 === OPPORTUNITY FEED ===
-[ 89.2 Hot Lead              ] r/smallbusiness  SMB Owner  explicit | Booking through WhatsApp is a mess...
-[ 81.1 Qualified Opportunity ] r/smallbusiness  Agency     explicit | Website agency quoted $6000...
-[ 77.6 Qualified Opportunity ] r/Entrepreneur   SMB Owner  high     | Branded app for my gym - Vagaro too expensive
-[ 74.8 Qualified Opportunity ] r/startups       Founder    high     | No CTO, need an MVP...
+[ 89.2 Hot Lead   ] r/smallbusiness  SMB Owner  explicit | Booking through WhatsApp is a mess...
+[ 81.1 Qualified  ] r/smallbusiness  Agency     explicit | Website agency quoted $6000...
+[ 77.6 Qualified  ] r/Entrepreneur   SMB Owner  high     | Branded app for my gym - Vagaro too expensive
+[ 74.8 Qualified  ] r/startups       Founder    high     | No CTO, need an MVP...
 ```
 
-## 切换到真实模式
+</details>
 
-编辑 `.env`（从 `.env.example` 复制）：
+## 🔍 How it works
+
+```
+Radar Project → subreddits + keywords → collect posts/comments (mock or live Reddit)
+   → dedupe → LLM analysis (schema-validated) → structured Insight
+   → explainable Opportunity Score → Feed → human triage & follow-up
+   → community / trend / competitor / active-user analytics → daily & weekly reports
+```
+
+Each content item yields a validated `Insight`: Chinese summary, persona, industry, pain point, purchase intent, competitors, budget signal, evidence quotes, suggested action, confidence, and a full score breakdown. LLM failures are isolated per-item — one bad response never aborts a scan.
+
+## 🧠 Scoring model
+
+| Score | Scope | Dimensions | Purpose |
+|-------|-------|-----------|---------|
+| **Opportunity Score** | per item | intent · ICP match · pain · MeDo fit · urgency · budget · engagement · freshness | Rank what to act on |
+| **Channel Score** | per subreddit | relevance · high-intent · persona · comment depth · recency · reachable · growth | Tier communities (A/B/C/Watchlist) |
+| **Active User Score** | per author | frequency · topic · quality · influence · engagement · recency · stated role | Surface builders & buyers |
+
+Weights live in configuration (never hard-coded in the UI). Change them in **Settings** and hit **Rescore** to recompute — no LLM re-run needed.
+
+## 🏗️ Architecture
+
+<details>
+<summary><strong>Tech stack & data flow</strong></summary>
+
+**Backend** — FastAPI · async SQLAlchemy 2.0 · Pydantic v2 · SQLite (dev) / Postgres + pgvector (prod)
+**Frontend** — Next.js 14 (App Router) · TypeScript · Tailwind · TanStack Query
+**Workers** — in-process asyncio scheduler (MVP) → Celery Beat (prod); scan service unchanged
+
+```
+             ┌────────────────────────────────────────────┐
+ Next.js  ──▶│  FastAPI                                     │
+ Dashboard   │   routers: projects · radar · analytics       │
+             │   services: scan · scoring · channel_score ·  │
+             │             active_user · scheduler · report  │
+             │   adapters: SourceAdapter (Reddit, …)         │
+             │   llm:      LLMProvider · Embedding           │
+             └───────────────┬───────────────┬──────────────┘
+                     ┌────────▼─────┐  ┌───────▼──────┐
+                     │  PostgreSQL  │  │    Redis     │  (prod)
+                     │  + pgvector  │  │  Celery broker│
+                     └──────────────┘  └──────────────┘
+```
+
+Everything runs on SQLite + mock adapters for local dev; the same interfaces back the Postgres/Redis stack via `docker-compose.yml`.
+
+</details>
+
+<details>
+<summary><strong>Repository layout</strong></summary>
+
+```
+apps/api/            FastAPI backend
+  app/adapters/      SourceAdapter (mock + Async PRAW)
+  app/llm/           LLMProvider + Embedding (mock + OpenAI-compatible)
+  app/services/      scoring · channel_score · active_user · scan · scheduler · report
+  app/routers/       projects · radar · analytics
+  tests/             unit + API integration (12 tests)
+  demo_slice.py      end-to-end demo
+apps/web/            Next.js 14 dashboard (9 pages)
+fixtures/reddit/     mock data
+docs/                PRD · ARCHITECTURE · DATA_MODEL · API · PROMPTS · DEVELOPMENT
+docker-compose.yml   Postgres + Redis + API (full stack)
+```
+
+</details>
+
+## 🔧 Going live
+
+Copy `.env.example` to `.env` and provide credentials — the API interface is identical to mock mode.
 
 ```bash
 SOURCE_ADAPTER=reddit
-REDDIT_CLIENT_ID=...
-REDDIT_CLIENT_SECRET=...
+REDDIT_CLIENT_ID=...          REDDIT_CLIENT_SECRET=...
 LLM_PROVIDER=openai-compatible
-LLM_API_KEY=...
+LLM_API_KEY=...               LLM_BASE_URL=https://api.openai.com/v1
 DATABASE_URL=postgresql+asyncpg://medo:medo@localhost:5432/medo_radar
+SCHEDULER_ENABLED=true        SCAN_NEW_INTERVAL_MINUTES=10
 ```
 
-真实 Reddit 需要 `pip install async-praw asyncpg`（见 requirements.txt 注释）。
-`/api/status` 与 `/health` 会显示当前 `source_mode` / `llm_mode`（mock 或 live）。
+Live Reddit/Postgres need `pip install async-praw asyncpg`. `/api/status` and `/health` report the active `source_mode` / `llm_mode`.
 
-## 文档
+## 📚 Documentation
 
-- [docs/PRD.md](docs/PRD.md) — 产品需求
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — 架构与数据流
-- [docs/DATA_MODEL.md](docs/DATA_MODEL.md) — 数据模型
-- [docs/API.md](docs/API.md) — API 参考
-- [docs/PROMPTS.md](docs/PROMPTS.md) — LLM 分析契约与提示词
-- [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) — 开发指南
+| Doc | Contents |
+|-----|----------|
+| [PRD](docs/PRD.md) | Product requirements & acceptance criteria |
+| [Architecture](docs/ARCHITECTURE.md) | Components, data flow, reliability |
+| [Data Model](docs/DATA_MODEL.md) | All entities & relationships |
+| [API](docs/API.md) | Endpoint reference |
+| [Prompts](docs/PROMPTS.md) | LLM analysis contract & prompts |
+| [Development](docs/DEVELOPMENT.md) | Setup, modes, testing |
 
-## 目录结构
+## 🗺️ Roadmap
 
+- [x] **P0** — collection, mock adapters, scoring, feed, triage, daily reports, task health
+- [x] **P1** — analytics dashboards, weekly reports, CSV export, semantic recall, active users, scheduler, i18n
+- [ ] **P2** — multi-source (Hacker News, GitHub, Product Hunt), CRM integration, historical trend snapshots, auth & multi-tenancy
+
+## ⚠️ Known limitations
+
+- `recency` / `growth` sub-scores are placeholders pending historical snapshots.
+- The scheduler is in-process asyncio (MVP-grade); swap for Celery Beat in production.
+- Embeddings use a deterministic mock; plug a real provider via the `Embedding` interface.
+- No frontend auth yet (single-tenant internal tool).
+
+## 🤝 Contributing
+
+```bash
+git clone https://github.com/ZhanlinCui/Raddit-Market-Radar.git
+cd Raddit-Market-Radar/apps/api && python3.11 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt && python -m pytest -q
 ```
-apps/api/            FastAPI 后端
-  app/adapters/      SourceAdapter 抽象 + Mock/Real Reddit
-  app/llm/           LLMProvider + Embedding 抽象 + Mock/OpenAI-compatible
-  app/services/      scoring / channel_score / active_user / scan / scheduler / report
-  app/routers/       projects / radar / analytics API
-  tests/             单元 + API 集成测试（12 项）
-  demo_slice.py      端到端演示
-apps/web/            Next.js 14 Dashboard（9 页，App Router + Tailwind + TanStack Query）
-fixtures/reddit/     Mock 数据
-docs/                项目文档
-docker-compose.yml   Postgres + Redis + API（完整栈）
-```
 
-## 已知限制
+Issues and PRs welcome. Please keep the mock path green — it's the contract that lets anyone run the system without credentials.
 
-- Channel Score 的 recency/growth、Active User Score 的 recency 为占位值，需历史快照（后续）才能算真实近 30 日趋势。
-- 真实 Reddit / Postgres / Celery 依赖为可选安装，Mock/SQLite 路径已端到端验证。
-- 定时调度为进程内 asyncio 实现（MVP）；生产可换 Celery Beat，scan 服务不变。
-- 前端认证尚未接入（内部工具，MVP 阶段单租户）。
-- 语义召回与 Embedding 使用确定性 Mock 向量；真实 Embedding provider 按接口替换即可。
+## 📄 License
+
+[MIT](LICENSE)
