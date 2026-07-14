@@ -1,0 +1,72 @@
+[
+  {
+    "id": "post_001",
+    "content_type": "post",
+    "subreddit": "smallbusiness",
+    "author": "salon_maria",
+    "title": "Booking through WhatsApp is a mess - need a real booking system",
+    "selftext": "I run a small nail salon. I take all appointments over WhatsApp and Instagram DM and I keep getting double bookings and no-shows. Mindbody quoted me way too expensive for what I need. Looking for an affordable booking system with reminders. Willing to pay if it actually reduces no-shows.",
+    "url": "https://reddit.com/r/smallbusiness/post_001",
+    "permalink": "/r/smallbusiness/comments/post_001/",
+    "score": 84,
+    "upvote_ratio": 0.97,
+    "num_comments": 23,
+    "created_utc": 1752460000
+  },
+  {
+    "id": "post_002",
+    "content_type": "post",
+    "subreddit": "Entrepreneur",
+    "author": "gym_owner_rj",
+    "title": "Want a branded app for my gym - Vagaro is too expensive",
+    "selftext": "My members keep asking for an app. Vagaro and the other studio apps are too expensive and show competitors. I want my own branded app for appointments and membership. Any alternative to Vagaro that lets me have a native app for my studio?",
+    "url": "https://reddit.com/r/Entrepreneur/post_002",
+    "permalink": "/r/Entrepreneur/comments/post_002/",
+    "score": 51,
+    "upvote_ratio": 0.93,
+    "num_comments": 12,
+    "created_utc": 1752470000
+  },
+  {
+    "id": "post_003",
+    "content_type": "post",
+    "subreddit": "startups",
+    "author": "solo_founder_x",
+    "title": "No CTO, need an MVP and a demo for investors fast",
+    "selftext": "I'm a non-technical founder. I need to build an MVP and a demo for investors in the next two weeks. I looked at Lovable and Bolt but hit limitations. What should I use to build a prototype quickly with Supabase backend?",
+    "url": "https://reddit.com/r/startups/post_003",
+    "permalink": "/r/startups/comments/post_003/",
+    "score": 132,
+    "upvote_ratio": 0.95,
+    "num_comments": 44,
+    "created_utc": 1752480000
+  },
+  {
+    "id": "post_004",
+    "content_type": "post",
+    "subreddit": "webdev",
+    "author": "random_dev",
+    "title": "What's your favorite mechanical keyboard?",
+    "selftext": "Off topic but curious what everyone is typing on these days. Just got a new board and love it.",
+    "url": "https://reddit.com/r/webdev/post_004",
+    "permalink": "/r/webdev/comments/post_004/",
+    "score": 8,
+    "upvote_ratio": 0.7,
+    "num_comments": 60,
+    "created_utc": 1752485000
+  },
+  {
+    "id": "post_005",
+    "content_type": "post",
+    "subreddit": "smallbusiness",
+    "author": "cleaning_co",
+    "title": "Website agency quoted $6000 - is that normal?",
+    "selftext": "I run a cleaning business and a local agency quoted me $6000 for a website plus monthly maintenance. That feels too expensive. I just need a site where people can request a quote and book. Is there a cheaper way to build a website for my business?",
+    "url": "https://reddit.com/r/smallbusiness/post_005",
+    "permalink": "/r/smallbusiness/comments/post_005/",
+    "score": 67,
+    "upvote_ratio": 0.9,
+    "num_comments": 19,
+    "created_utc": 1752490000
+  }
+]

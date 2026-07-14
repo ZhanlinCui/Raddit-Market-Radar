@@ -1,0 +1,26 @@
+[
+  {
+    "id": "cmt_001",
+    "content_type": "comment",
+    "subreddit": "smallbusiness",
+    "author": "another_owner",
+    "body": "Same problem here. I switched away from Mindbody because it was too expensive. Looking for an alternative that does WhatsApp reminders.",
+    "permalink": "/r/smallbusiness/comments/post_001/cmt_001/",
+    "score": 14,
+    "num_comments": 0,
+    "parent_id": "t3_post_001",
+    "created_utc": 1752461000
+  },
+  {
+    "id": "cmt_002",
+    "content_type": "comment",
+    "subreddit": "startups",
+    "author": "tech_advisor",
+    "body": "For a fast MVP with Supabase you want something that handles auth and DB for you. Bolt is fine until you need real backend logic.",
+    "permalink": "/r/startups/comments/post_003/cmt_002/",
+    "score": 9,
+    "num_comments": 0,
+    "parent_id": "t3_post_003",
+    "created_utc": 1752481000
+  }
+]

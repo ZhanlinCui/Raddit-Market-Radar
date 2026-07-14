@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Manrope", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* ---- Light theme (default): clean paper ground, deep-teal ink ---- */
+:root,
+[data-theme="light"] {
+  --ink-900: 255 255 255; /* page bg */
+  --ink-800: 255 255 255; /* panel bg */
+  --ink-700: 244 246 250; /* subtle fill */
+  --ink-600: 232 236 243;
+  --ink-500: 214 221 231;
+  --ink-400: 148 161 180; /* muted glyphs */
+  --line: 224 229 238;
+  --mist: 90 104 128; /* secondary text */
+  --chalk: 15 26 42; /* primary text */
+
+  --hot: 227 63 44;
+  --qualified: 197 122 0;
+  --insight: 13 148 108;
+  --watch: 42 108 224;
+  --noise: 130 143 160;
+  --phosphor: 13 148 108;
+
+  --page-gradient:
+    radial-gradient(1200px 600px at 82% -12%, rgba(13, 148, 108, 0.07), transparent 60%),
+    radial-gradient(900px 520px at -5% 0%, rgba(42, 108, 224, 0.05), transparent 55%);
+  --grid-line: rgba(15, 26, 42, 0.03);
+  --shadow-panel: 0 1px 0 0 rgba(255, 255, 255, 0.6) inset, 0 12px 32px -20px rgba(15, 26, 42, 0.25);
+}
+
+/* ---- Dark theme: the original Signal Console phosphor console ---- */
+[data-theme="dark"] {
+  --ink-900: 10 14 20;
+  --ink-800: 15 20 29;
+  --ink-700: 21 28 40;
+  --ink-600: 28 37 52;
+  --ink-500: 40 50 68;
+  --ink-400: 58 70 91;
+  --line: 34 48 74;
+  --mist: 132 147 173;
+  --chalk: 230 236 245;
+
+  --hot: 255 92 73;
+  --qualified: 255 176 32;
+  --insight: 56 224 176;
+  --watch: 91 157 255;
+  --noise: 90 101 121;
+  --phosphor: 56 224 176;
+
+  --page-gradient:
+    radial-gradient(1200px 600px at 78% -10%, rgba(56, 224, 176, 0.08), transparent 60%),
+    radial-gradient(900px 500px at 0% 0%, rgba(91, 157, 255, 0.06), transparent 55%);
+  --grid-line: rgba(255, 255, 255, 0.018);
+  --shadow-panel: 0 1px 0 0 rgba(255, 255, 255, 0.03) inset, 0 24px 60px -30px rgba(0, 0, 0, 0.8);
+}
+
+* {
+  border-color: rgb(var(--line));
+}
+
+body {
+  background: var(--page-gradient), rgb(var(--ink-900));
+  color: rgb(var(--chalk));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.grid-texture {
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.panel {
+  background: rgb(var(--ink-800));
+  border: 1px solid rgb(var(--line));
+  border-radius: 14px;
+  box-shadow: var(--shadow-panel);
+}
+
+.tag {
+  @apply inline-flex items-center gap-1 rounded-md border border-line bg-ink-700 px-2 py-0.5 text-[11px] font-medium text-mist;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: rgb(var(--ink-500)); border-radius: 8px; }
+::-webkit-scrollbar-track { background: transparent; }

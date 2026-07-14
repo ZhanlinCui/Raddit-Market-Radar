@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Env / secrets
+.env
+.env.local
+
+# Databases (local slice)
+*.db
+demo_radar.db
+test_radar.db
+medo_radar.db
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Node (P1 frontend)
+node_modules/
+.next/

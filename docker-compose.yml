@@ -1,0 +1,41 @@
+# Full-stack local infra. The verifiable slice needs none of this (SQLite + mock).
+# Use this to run the Postgres/Redis-backed stack.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: medo
+      POSTGRES_PASSWORD: medo
+      POSTGRES_DB: medo_radar
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U medo"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  api:
+    build:
+      context: ./apps/api
+    environment:
+      DATABASE_URL: postgresql+asyncpg://medo:medo@db:5432/medo_radar
+      SOURCE_ADAPTER: ${SOURCE_ADAPTER:-mock}
+      LLM_PROVIDER: ${LLM_PROVIDER:-mock}
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+volumes:
+  pgdata:
